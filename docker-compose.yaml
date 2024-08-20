@@ -69,7 +69,7 @@ services:
     restart: unless-stopped
     command: --config /etc/vector/vector.toml
     ports:
-      - "5114:5114"
-      - "5115:5115"
+      - "5114:5114/tcp"
+      - "5114:5114/udp"
     volumes:
       - "./vector:/etc/vector"
