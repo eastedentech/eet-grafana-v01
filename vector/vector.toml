@@ -1,0 +1,13 @@
+
+[sources.syslog_tcp5114]
+type = "syslog"
+address = "0.0.0.0:5114"
+mode = "tcp"
+#path = "/path/to/socket"
+
+
+
+[sinks.loki]
+type = "loki"
+inputs = [ "syslog_tcp5114" ]
+endpoint = "http://localhost:3100"

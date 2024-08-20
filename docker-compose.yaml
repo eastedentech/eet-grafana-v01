@@ -54,5 +54,7 @@ services:
   vector:
     image: timberio/vector:latest-alpine
     command: --config /etc/vector/vector.toml
+    ports:
+      - "5114:5114"
     volumes:
-      - ./vector:/etc/vector
+      - "./vector:/etc/vector"
