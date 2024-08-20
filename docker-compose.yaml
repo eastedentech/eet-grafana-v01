@@ -71,5 +71,8 @@ services:
     ports:
       - "5114:5114/tcp"
       - "5114:5114/udp"
+      - "5115:5115/udp"
+      - "5116:5116/udp"
+      - "5117:5117/udp"
     volumes:
       - "./vector:/etc/vector"

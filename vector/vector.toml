@@ -15,8 +15,23 @@ type = "socket"
 address = "0.0.0.0:5114"
 mode = "udp"
 
+[sources.socket_udp5115]
+type = "socket"
+address = "0.0.0.0:5115"
+mode = "udp"
 
-[transforms.parse]
+[sources.socket_udp5116]
+type = "socket"
+address = "0.0.0.0:5116"
+mode = "udp"
+
+[sources.socket_udp5117]
+type = "socket"
+address = "0.0.0.0:5117"
+mode = "udp"
+
+
+[transforms.parse_socket_udp5114]
 type = "remap"
 inputs = ["socket_udp5114"]
 source = """
@@ -37,7 +52,7 @@ labels = {source="vector"}
 
 [sinks.loki02]
 type = "loki"
-inputs = [ "socket_udp5114" ]
+inputs = [ "parse_socket_udp5114" ]
 endpoint = "http://loki:3100"
 encoding.codec = "json"
 path = "/loki/api/v1/push"
