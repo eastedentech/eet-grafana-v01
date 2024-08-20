@@ -38,7 +38,7 @@ ingester:
 ruler_storage:
   backend: local
   local:
-    directory: ./mimir/tmp/mimir/rules
+    directory: /container_data/eet-grafana-v01/mimir/rules
 
 server:
   http_listen_port: 9009
