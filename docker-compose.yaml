@@ -23,6 +23,7 @@ services:
     restart: unless-stopped
     volumes:
       - "./mimir/config-single.yaml:/etc/mimir/config.yaml"
+      - "./mimir/data:/tmp/mimir"
     ports:
       - "9009:9009"
     command: [
