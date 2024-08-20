@@ -41,6 +41,35 @@ if err == null {
 }
 """
 
+[transforms.parse_socket_udp5115]
+type = "remap"
+inputs = ["socket_udp5115"]
+source = """
+parsed, err = parse_syslog(.message)
+if err == null {
+  . |= parsed
+}
+"""
+
+[transforms.parse_socket_udp5116]
+type = "remap"
+inputs = ["socket_udp5116"]
+source = """
+parsed, err = parse_syslog(.message)
+if err == null {
+  . |= parsed
+}
+"""
+
+[transforms.parse_socket_udp5117]
+type = "remap"
+inputs = ["socket_udp5117"]
+source = """
+parsed, err = parse_syslog(.message)
+if err == null {
+  . |= parsed
+}
+"""
 
 [sinks.loki01]
 type = "loki"
@@ -50,10 +79,34 @@ encoding.codec = "json"
 path = "/loki/api/v1/push"
 labels = {source="vector"}
 
-[sinks.loki02]
+[sinks.loki_parse_socket_udp5114]
 type = "loki"
 inputs = [ "parse_socket_udp5114" ]
 endpoint = "http://loki:3100"
 encoding.codec = "json"
 path = "/loki/api/v1/push"
-labels = {source="vector"}
+labels = {source="Meraki_MX67", meraki_role="Flows"}
+
+[sinks.loki_parse_socket_udp5115]
+type = "loki"
+inputs = [ "parse_socket_udp5115" ]
+endpoint = "http://loki:3100"
+encoding.codec = "json"
+path = "/loki/api/v1/push"
+labels = {source="Meraki_MX67", meraki_role="URLs"}
+
+[sinks.loki_parse_socket_udp5116]
+type = "loki"
+inputs = [ "parse_socket_udp5116" ]
+endpoint = "http://loki:3100"
+encoding.codec = "json"
+path = "/loki/api/v1/push"
+labels = {source="Meraki_MX67", meraki_role="Security Events"}
+
+[sinks.loki_parse_socket_udp5117]
+type = "loki"
+inputs = [ "parse_socket_udp5117" ]
+endpoint = "http://loki:3100"
+encoding.codec = "json"
+path = "/loki/api/v1/push"
+labels = {source="Meraki_MX67", meraki_role="WAN Appliance Event Log"}
