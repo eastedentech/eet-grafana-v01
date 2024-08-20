@@ -5,9 +5,9 @@ address = "0.0.0.0:5114"
 mode = "tcp"
 #path = "/path/to/socket"
 
-[sources.syslog_udp5115]
+[sources.syslog_udp5114]
 type = "syslog"
-address = "0.0.0.0:5115"
+address = "0.0.0.0:5114"
 mode = "udp"
 
 [sinks.loki01]
