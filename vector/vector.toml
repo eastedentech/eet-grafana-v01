@@ -10,7 +10,7 @@ type = "syslog"
 address = "0.0.0.0:5115"
 mode = "udp"
 
-[sinks.loki]
+[sinks.loki01]
 type = "loki"
 inputs = [ "syslog_tcp5114" ]
 endpoint = "http://loki:3100"
@@ -18,16 +18,10 @@ encoding.codec = "json"
 path = "/loki/api/v1/push"
 labels = {source="vector"}
 
-[sinks.loki]
+[sinks.loki02]
 type = "loki"
 inputs = [ "syslog_udp5115" ]
 endpoint = "http://loki:3100"
 encoding.codec = "json"
 path = "/loki/api/v1/push"
 labels = {source="vector"}
-
-#  [sinks.loki.labels]
-#  "\"*\"" = "{{ metadata }}"
-#  "\"pod_labels_*\"" = "{{ kubernetes.pod_labels }}"
-#  source = "vector"
-#  "{{ event_field }}" = "{{ some_other_event_field }}"
