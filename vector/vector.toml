@@ -10,7 +10,7 @@ mode = "tcp"
 [sinks.loki]
 type = "loki"
 inputs = [ "syslog_tcp5114" ]
-endpoint = "http://localhost:3100"
+endpoint = "http://loki:3100"
 encoding.codec = "json"
 labels = {source="vector"}
 
