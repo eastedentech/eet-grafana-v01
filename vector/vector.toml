@@ -5,10 +5,27 @@ address = "0.0.0.0:5114"
 mode = "tcp"
 #path = "/path/to/socket"
 
-[sources.syslog_udp5114]
-type = "syslog"
+#[sources.syslog_udp5114]
+#type = "syslog"
+#address = "0.0.0.0:5114"
+#mode = "udp"
+
+[sources.socket_udp5114]
+type = "socket"
 address = "0.0.0.0:5114"
 mode = "udp"
+
+
+[transforms.parse]
+type = "remap"
+inputs = ["socket_udp5114"]
+source = """
+parsed, err = parse_syslog(.message)
+if err == null {
+  . |= parsed
+}
+"""
+
 
 [sinks.loki01]
 type = "loki"
@@ -20,7 +37,7 @@ labels = {source="vector"}
 
 [sinks.loki02]
 type = "loki"
-inputs = [ "syslog_udp5114" ]
+inputs = [ "socket_udp5114" ]
 endpoint = "http://loki:3100"
 encoding.codec = "json"
 path = "/loki/api/v1/push"
