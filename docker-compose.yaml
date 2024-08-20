@@ -53,6 +53,8 @@ services:
 
   vector:
     image: timberio/vector:latest-alpine
+    depends_on:
+      - loki
     command: --config /etc/vector/vector.toml
     ports:
       - "5114:5114"
