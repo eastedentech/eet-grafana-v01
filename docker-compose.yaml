@@ -7,6 +7,7 @@ services:
   # Grafana for exploring and visualizing data
   grafana-server:
     image: grafana/grafana:latest
+    restart: unless-stopped
     volumes:
       - "./grafana/grafana.ini:/etc/grafana/grafana.ini"
       - "./grafana/provisioning:/etc/grafana/provisioning"
@@ -18,6 +19,7 @@ services:
     image: grafana/mimir:latest
     depends_on:
       - grafana-server
+    restart: unless-stopped
     volumes:
       - "./mimir/config-single.yaml:/etc/mimir/config.yaml"
     ports:
@@ -31,6 +33,7 @@ services:
     image: grafana/agent:latest
     depends_on:
       - mimir
+    restart: unless-stopped
     ports:
       - "12345:12345"
       - "3500:3500"
@@ -46,6 +49,13 @@ services:
     image: grafana/loki:latest
     depends_on:
       - grafana-server
+    healthcheck:
+      test: wget --quiet --tries=1 --output-document=- http://localhost:3100/ready | grep -q -w ready || exit 1
+      start_period: 20s
+      interval: 10s
+      timeout: 1s
+      retries: 12  # try for 2 minutes
+    restart: unless-stopped
     ports:
       - "3100:3100"
     volumes:
@@ -54,8 +64,9 @@ services:
   vector:
     image: timberio/vector:latest-alpine
     depends_on:
-      - loki
-    restart: on-failure
+      loki:
+        condition: service_healthy
+    restart: unless-stopped
     command: --config /etc/vector/vector.toml
     ports:
       - "5114:5114"
