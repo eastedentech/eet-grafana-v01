@@ -55,6 +55,7 @@ services:
     image: timberio/vector:latest-alpine
     depends_on:
       - loki
+    restart: on-failure
     command: --config /etc/vector/vector.toml
     ports:
       - "5114:5114"
