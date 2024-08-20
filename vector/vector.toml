@@ -5,11 +5,14 @@ address = "0.0.0.0:5114"
 mode = "tcp"
 #path = "/path/to/socket"
 
-
+[sources.syslog_udp5114]
+type = "syslog"
+address = "0.0.0.0:5114"
+mode = "udp"
 
 [sinks.loki]
 type = "loki"
-inputs = [ "syslog_tcp5114" ]
+inputs = [ "syslog_tcp5114", "syslog_udp5114" ]
 endpoint = "http://loki:3100"
 encoding.codec = "json"
 path = "/loki/api/v1/push"
