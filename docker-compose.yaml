@@ -50,3 +50,9 @@ services:
       - "3100:3100"
     volumes:
       - "./loki/config.yaml:/etc/loki/local-config.yaml"
+
+  vector:
+    image: timberio/vector:latest-alpine
+    command: --config /etc/vector/vector.toml
+    volumes:
+      - ./vector:/etc/vector
