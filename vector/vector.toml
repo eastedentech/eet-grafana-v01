@@ -12,9 +12,11 @@ type = "loki"
 inputs = [ "syslog_tcp5114" ]
 endpoint = "http://localhost:3100"
 encoding.codec = "json"
+labels = {source="vector"}
 
-  [sinks.loki.labels]
-  "\"*\"" = "{{ metadata }}"
-  "\"pod_labels_*\"" = "{{ kubernetes.pod_labels }}"
-  source = "vector"
-  "{{ event_field }}" = "{{ some_other_event_field }}"
+
+#  [sinks.loki.labels]
+#  "\"*\"" = "{{ metadata }}"
+#  "\"pod_labels_*\"" = "{{ kubernetes.pod_labels }}"
+#  source = "vector"
+#  "{{ event_field }}" = "{{ some_other_event_field }}"
