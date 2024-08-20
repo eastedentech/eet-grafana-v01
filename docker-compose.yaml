@@ -51,8 +51,8 @@ services:
       - grafana-server
     healthcheck:
       test: wget --quiet --tries=1 --output-document=- http://localhost:3100/ready | grep -q -w ready || exit 1
-      start_period: 20s
-      interval: 10s
+      start_period: 5s
+      interval: 5s
       timeout: 1s
       retries: 12  # try for 2 minutes
     restart: unless-stopped
