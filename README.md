@@ -1,1 +1,1 @@
-# eet-grafana-v01
+# eet-syslog-server
