@@ -62,6 +62,7 @@ services:
       - "3100:3100"
     volumes:
       - "./loki/config.yaml:/etc/loki/local-config.yaml"
+      # - "./loki:"
 
   vector:
     image: timberio/vector:latest-alpine
