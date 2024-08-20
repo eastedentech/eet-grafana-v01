@@ -59,5 +59,6 @@ services:
     command: --config /etc/vector/vector.toml
     ports:
       - "5114:5114"
+      - "5115:5115"
     volumes:
       - "./vector:/etc/vector"
