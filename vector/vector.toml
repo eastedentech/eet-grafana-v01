@@ -5,15 +5,15 @@ address = "0.0.0.0:5114"
 mode = "tcp"
 #path = "/path/to/socket"
 
-# [sources.syslog_udp5114]
-# type = "syslog"
-# address = "0.0.0.0:5114"
-# mode = "udp"
-
-[sources.socket_udp5114]
-type = "socket"
+[sources.syslog_udp5114]
+type = "syslog"
 address = "0.0.0.0:5114"
 mode = "udp"
+
+# [sources.socket_udp5114]
+# type = "socket"
+# address = "0.0.0.0:5114"
+# mode = "udp"
 
 [sources.socket_udp5115]
 type = "socket"
@@ -73,11 +73,13 @@ if err == null {
 
 [sinks.loki01]
 type = "loki"
-inputs = [ "syslog_tcp5114" ]
+inputs = [ "syslog_tcp5114", "syslog_udp5114" ]
+compression = "snappy"
 endpoint = "http://loki:3100"
 encoding.codec = "json"
 path = "/loki/api/v1/push"
-labels = {source="vector"}
+# labels = {source="vector"}
+labels = {source="Meraki_MX67", meraki_role="Flows"}
 
 [sinks.loki_parse_socket_udp5114]
 type = "loki"
