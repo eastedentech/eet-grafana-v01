@@ -1,6 +1,11 @@
 #version: "3.8"
-volumes:
-  grafana:
+volumes: 
+  vol-grafana01: 
+    name: ${BASE-NAME-PREFIX}-vol-grafana-01
+  vol-loki01: 
+    name: ${BASE-NAME-PREFIX}-vol-loki-01
+  vol-vector01: 
+    name: ${BASE-NAME-PREFIX}-vol-vector-01
 
 services:
 
@@ -11,46 +16,15 @@ services:
     volumes:
       - "./grafana/grafana.ini:/etc/grafana/grafana.ini"
       - "./grafana/provisioning:/etc/grafana/provisioning"
-      - "./grafana/data:/var/lib/grafana"
+      # - "./grafana/data:/var/lib/grafana"
+      - vol-grafana01:/var/lib/grafana
     ports:
       - "3000:3000"
-
-   # Grafana Metrics
-  mimir:
-    image: grafana/mimir:latest
-    depends_on:
-      - grafana-server
-    restart: unless-stopped
-    volumes:
-      - "./mimir/config-single.yaml:/etc/mimir/config.yaml"
-      - "./mimir/data:/tmp/mimir"
-    ports:
-      - "9009:9009"
-    command: [
-      "-config.file=/etc/mimir/config.yaml"
-    ]
-
-  # Grafana Agent
-  grafana-agent:
-    image: grafana/agent:latest
-    depends_on:
-      - mimir
-    restart: unless-stopped
-    ports:
-      - "12345:12345"
-      - "3500:3500"
-      - "16603:16603"
-    volumes:
-      - "./grafana-agent/config.yaml:/etc/agent/agent.yaml"
-    command: [
-      "-config.file=/etc/agent/agent.yaml",
-      "-server.http.address=0.0.0.0:12345",
-    ]
 
   loki:
     image: grafana/loki:latest
     depends_on:
-      - grafana-server
+      grafana-server:
     healthcheck:
       test: wget --quiet --tries=1 --output-document=- http://localhost:3100/ready | grep -q -w ready || exit 1
       start_period: 5s
@@ -62,7 +36,7 @@ services:
       - "3100:3100"
     volumes:
       - "./loki/config.yaml:/etc/loki/local-config.yaml"
-      - "./loki:/loki"
+      - vol-loki01:/loki
 
   vector:
     image: timberio/vector:latest-alpine

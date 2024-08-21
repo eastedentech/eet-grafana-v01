@@ -3,9 +3,10 @@ auth_enabled: false
 server:
   http_listen_port: 3100
   grpc_listen_port: 9096
+  grpc_server_max_concurrent_streams: 1000
 
 common:
-  path_prefix: /tmp/loki
+  path_prefix: /loki
   storage:
     filesystem:
       chunks_directory: /loki/chunks
@@ -18,16 +19,25 @@ common:
 
 schema_config:
   configs:
-    - from: 2020-10-24
-      store: boltdb-shipper
+    - from: 2024-08-01
+      store: tsbd
       object_store: filesystem
-      schema: v11
+      schema: v13
       index:
         prefix: index_
         period: 24h
 
+pattern_ingester:
+  enabled: true
+  metric_aggregation:
+    enabled: true
+    loki_address: localhost:3100
+
 ruler:
   alertmanager_url: http://localhost:9093
+
+frontend:
+  encoding: protobuf
 
 # By default, Loki will send anonymous, but uniquely-identifiable usage and configuration
 # analytics to Grafana Labs. These statistics are sent to https://stats.grafana.org/

@@ -13,10 +13,3 @@ datasources:
           matcherRegex: "^.*?traceI[d|D]=(\\w+).*$"
           name: traceId
           url: '$${__value.raw}'
-          
-  - name: Mimir1
-    type: prometheus
-    access: proxy
-    isDefault: false
-    uid: mimir
-    url: http://mimir:9009/prometheus
