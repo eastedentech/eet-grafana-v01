@@ -20,7 +20,7 @@ common:
 schema_config:
   configs:
     - from: 2024-08-01
-      store: tsbd
+      store: tsdb
       object_store: filesystem
       schema: v13
       index: 
