@@ -31,15 +31,15 @@ address = "0.0.0.0:5117"
 mode = "udp"
 
 
-[transforms.parse_socket_udp5114]
-type = "remap"
-inputs = ["socket_udp5114"]
-source = """
-parsed, err = parse_syslog(.message)
-if err == null {
-  . |= parsed
-}
-"""
+# [transforms.parse_socket_udp5114]
+# type = "remap"
+# inputs = ["socket_udp5114"]
+# source = """
+# parsed, err = parse_syslog(.message)
+# if err == null {
+#   . |= parsed
+# }
+# """
 
 [transforms.parse_socket_udp5115]
 type = "remap"
@@ -81,13 +81,13 @@ path = "/loki/api/v1/push"
 # labels = {source="vector"}
 labels = {source="Meraki_MX67", meraki_role="Flows"}
 
-[sinks.loki_parse_socket_udp5114]
-type = "loki"
-inputs = [ "parse_socket_udp5114" ]
-endpoint = "http://loki:3100"
-encoding.codec = "json"
-path = "/loki/api/v1/push"
-labels = {source="Meraki_MX67", meraki_role="Flows"}
+# [sinks.loki_parse_socket_udp5114]
+# type = "loki"
+# inputs = [ "parse_socket_udp5114" ]
+# endpoint = "http://loki:3100"
+# encoding.codec = "json"
+# path = "/loki/api/v1/push"
+# labels = {source="Meraki_MX67", meraki_role="Flows"}
 
 [sinks.loki_parse_socket_udp5115]
 type = "loki"
