@@ -24,7 +24,7 @@ services:
   loki:
     image: grafana/loki:latest
     depends_on:
-      grafana-server:
+      - grafana-server
     healthcheck:
       test: wget --quiet --tries=1 --output-document=- http://localhost:3100/ready | grep -q -w ready || exit 1
       start_period: 5s
