@@ -41,11 +41,6 @@ mode = "udp"
 # }
 # """
 
-[transforms.my_transform_id]
-type = "filter"
-inputs = [ "socket_udp5114" ]
-
-
 [transforms.parse_socket_udp5114]
 type = "remap"
 inputs = ["socket_udp5114"]
