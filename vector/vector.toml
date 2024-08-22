@@ -9,16 +9,16 @@ type = "socket"
 address = "0.0.0.0:5114"
 mode = "udp"
 
-[transforms.socket_udp5114_timeremap]
-type = "remap"
-inputs = ["socket_udp5114"]
-source = """
-.timestamp = .timestamp || to_unix_timestamp(to_timestamp!(.log.time), unit: "nanoseconds") || now()
-"""
+# [transforms.socket_udp5114_timeremap]
+# type = "remap"
+# inputs = ["socket_udp5114"]
+# source = """
+# .timestamp = .timestamp || to_unix_timestamp(to_timestamp!(.log.time), unit: "nanoseconds") || now()
+# """
 
 [transforms.socket_udp5114_parse]
 type = "remap"
-inputs = ["socket_udp5114_timeremap"]
+inputs = ["socket_udp5114"]
 source = """
 parsed, err = parse_syslog(.message)
 if err == null {
@@ -51,7 +51,6 @@ endpoint = "http://loki:3100"
 encoding.codec = "json"
 path = "/loki/api/v1/push"
 remove_label_fields = true
-# labels = {source="Meraki_MX67", meraki_role="Flows"}
 
   [sinks.socket_udp5114_loki.labels]
   "host" = "{{host}}"
