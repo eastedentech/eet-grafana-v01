@@ -4,13 +4,24 @@ sources:
     address: '0.0.0.0:5114'
     mode: udp
 
+# transforms:
+#   socket_udp5114_parse:
+#     type: remap
+#     inputs:
+#       - socket_udp5114
+#     source: |
+#       parsed, err = parse_syslog(.message)
+#       if err == null {
+#         . |= parsed
+#       }
+
 transforms:
   socket_udp5114_parse:
     type: remap
     inputs:
       - socket_udp5114
     source: |
-      parsed, err = parse_syslog(.message)
+      parsed, err = parse_grok(.message , "%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{IPV4:src} dst=%{IPV4:dst} protocol=%{WORD:protocol} sport=%{NUMBER:src_port} dport=%{NUMBER:dst_port} pattern: %{GREEDYDATA:pattern}" )
       if err == null {
         . |= parsed
       }
