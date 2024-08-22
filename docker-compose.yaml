@@ -1,11 +1,8 @@
 #version: "3.8"
 volumes: 
-  vol-grafana01: 
-    name: ${BASE-NAME-PREFIX}-vol-grafana-01
-  vol-loki01: 
-    name: ${BASE-NAME-PREFIX}-vol-loki-01
-  vol-vector01: 
-    name: ${BASE-NAME-PREFIX}-vol-vector-01
+  vol-grafana01:
+  vol-loki01:
+  vol-vector01:
 
 services:
 
@@ -53,3 +50,4 @@ services:
       # - "5117:5117/udp"
     volumes:
       - "./vector:/etc/vector"
+      - vol-vector01:/var/lib/vector
