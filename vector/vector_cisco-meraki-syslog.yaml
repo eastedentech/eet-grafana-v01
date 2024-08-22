@@ -15,31 +15,13 @@ sources:
 #         . |= parsed
 #       }
 
-# transforms:
-#   socket_udp5114_parse:
-#     type: remap
-#     inputs:
-#       - socket_udp5114
-#     source: |
-#       parsed, err = parse_groks(
-#         .message ,
-#         patterns: [
-#           "%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{IPV4:src} dst=%{IPV4:dst} protocol=%{WORD:protocol} sport=%{NUMBER:src_port} dport=%{NUMBER:dst_port} pattern: %{GREEDYDATA:pattern}",
-#           "%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{IPV4:src} dst=%{IPV4:dst} protocol=%{WORD:protocol} sport=%{NUMBER:src_port} dport=%{NUMBER:dst_port} translated_src_ip=%{IPV4:translated_src_ip} translated_port=%{NUMBER:translated_port}",
-#           "%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{HOSTPORT:src} dst=%{HOSTPORT:dst} mac=%{MAC:mac} request: %{WORD:request_type} %{GREEDYDATA:url}"
-#         ]
-#       )
-#       if err == null {
-#         . |= parsed
-#       }
-
 transforms:
   socket_udp5114_parse:
     type: remap
     inputs:
       - socket_udp5114
-    source: '''
-      . |= parse_groks!(
+    source: |
+      parsed, err = parse_groks(
         .message ,
         patterns: [
           "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{IPV4:src} dst=%{IPV4:dst} protocol=%{WORD:protocol} sport=%{NUMBER:src_port} dport=%{NUMBER:dst_port} pattern: %{GREEDYDATA:pattern}",
@@ -47,7 +29,25 @@ transforms:
           "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{HOSTPORT:src} dst=%{HOSTPORT:dst} mac=%{MAC:mac} request: %{WORD:request_type} %{GREEDYDATA:url}"
         ]
       )
-    '''
+      if err == null {
+        . |= parsed
+      }
+
+# transforms:
+#   socket_udp5114_parse:
+#     type: remap
+#     inputs:
+#       - socket_udp5114
+#     source: '''
+#       . |= parse_groks!(
+#         .message ,
+#         patterns: [
+#           "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{IPV4:src} dst=%{IPV4:dst} protocol=%{WORD:protocol} sport=%{NUMBER:src_port} dport=%{NUMBER:dst_port} pattern: %{GREEDYDATA:pattern}",
+#           "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{IPV4:src} dst=%{IPV4:dst} protocol=%{WORD:protocol} sport=%{NUMBER:src_port} dport=%{NUMBER:dst_port} translated_src_ip=%{IPV4:translated_src_ip} translated_port=%{NUMBER:translated_port}",
+#           "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{HOSTPORT:src} dst=%{HOSTPORT:dst} mac=%{MAC:mac} request: %{WORD:request_type} %{GREEDYDATA:url}"
+#         ]
+#       )
+#     '''
 
 sinks:
   socket_udp5114_loki:
