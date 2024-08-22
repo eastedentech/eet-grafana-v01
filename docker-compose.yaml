@@ -41,7 +41,7 @@ services:
       loki:
         condition: service_healthy
     restart: unless-stopped
-    command: --config /etc/vector/vector.toml
+    command: --config /etc/vector/vector.yaml --config /etc/vector/vector_cisco-meraki-syslog.yaml
     ports:
       # - "5114:5114/tcp"
       - "5114:5114/udp"

@@ -1,0 +1,31 @@
+sources:
+  socket_udp5114:
+    type: socket
+    address: '0.0.0.0:5114'
+    mode: udp
+
+transforms:
+  socket_udp5114_parse:
+    type: remap
+    inputs:
+      - socket_udp5114
+    source: |
+      parsed, err = parse_syslog(.message)
+      if err == null {
+        . |= parsed
+      }
+
+sinks:
+  socket_udp5114_loki:
+    type: loki
+    inputs:
+      - socket_udp5114_parse
+    endpoint: 'http://loki:3100'
+    encoding:
+      codec: json
+    path: /loki/api/v1/push
+    remove_label_fields: true
+    labels:
+      host: '{{host}}'
+      port: '{{port}}'
+      source_type: '{{source_type}}'
