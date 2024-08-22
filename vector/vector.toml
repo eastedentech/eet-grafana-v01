@@ -53,7 +53,7 @@ path = "/loki/api/v1/push"
 remove_label_fields = true
 # labels = {source="Meraki_MX67", meraki_role="Flows"}
 
-  [sinks.loki_parse_socket_udp5114.labels]
+  [sinks.socket_udp5114_loki.labels]
   "host" = "{{host}}"
   "port" = "{{port}}"
   "source_type" = "{{source_type}}"
