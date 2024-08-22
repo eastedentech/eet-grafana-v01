@@ -21,7 +21,8 @@ transforms:
     inputs:
       - socket_udp5114
     source: |
-      parsed, err = parse_groks(.message ,
+      parsed, err = parse_groks(
+      .message ,
       patterns: [
         "%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{IPV4:src} dst=%{IPV4:dst} protocol=%{WORD:protocol} sport=%{NUMBER:src_port} dport=%{NUMBER:dst_port} pattern: %{GREEDYDATA:pattern}",
         "%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{IPV4:src} dst=%{IPV4:dst} protocol=%{WORD:protocol} sport=%{NUMBER:src_port} dport=%{NUMBER:dst_port} translated_src_ip=%{IPV4:translated_src_ip} translated_port=%{NUMBER:translated_port}",
