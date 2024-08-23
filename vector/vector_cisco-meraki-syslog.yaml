@@ -24,9 +24,9 @@ transforms:
       parsed, err = parse_groks(
         .message ,
         patterns: [
-          "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{IPV4:src} dst=%{IPV4:dst}( mac=%{MAC:mac})? protocol=%{WORD:protocol} sport=%{NUMBER:src_port} dport=%{NUMBER:dst_port} pattern: %{GREEDYDATA:pattern}",
-          "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{IPV4:src} dst=%{IPV4:dst} protocol=%{WORD:protocol}( sport=%{NUMBER:src_port})?( dport=%{NUMBER:dst_port})? translated_src_ip=%{IPV4:translated_src_ip}( translated_port=%{NUMBER:translated_port})?",
-          "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{HOSTPORT:src} dst=%{HOSTPORT:dst} mac=%{MAC:mac}( agent=%{QUOTEDSTRING:agent})? request: %{WORD:request_type} %{GREEDYDATA:url}"
+          "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_log_type} src=%{IPV4:src} dst=%{IPV4:dst}( mac=%{MAC:mac})? protocol=%{WORD:protocol} sport=%{NUMBER:src_port} dport=%{NUMBER:dst_port} pattern: %{GREEDYDATA:pattern}",
+          "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_log_type} src=%{IPV4:src} dst=%{IPV4:dst} protocol=%{WORD:protocol}( sport=%{NUMBER:src_port})?( dport=%{NUMBER:dst_port})? translated_src_ip=%{IPV4:translated_src_ip}( translated_port=%{NUMBER:translated_port})?",
+          "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_log_type} src=%{HOSTPORT:src} dst=%{HOSTPORT:dst} mac=%{MAC:mac}( agent=%{QUOTEDSTRING:agent})? request: %{WORD:request_type} %{GREEDYDATA:url}"
         ]
       )
       if err == null {
@@ -42,9 +42,9 @@ transforms:
 #       . |= parse_groks!(
 #         .message ,
 #         patterns: [
-#           "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{IPV4:src} dst=%{IPV4:dst} protocol=%{WORD:protocol} sport=%{NUMBER:src_port} dport=%{NUMBER:dst_port} pattern: %{GREEDYDATA:pattern}",
-#           "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{IPV4:src} dst=%{IPV4:dst} protocol=%{WORD:protocol} sport=%{NUMBER:src_port} dport=%{NUMBER:dst_port} translated_src_ip=%{IPV4:translated_src_ip} translated_port=%{NUMBER:translated_port}",
-#           "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_role} src=%{HOSTPORT:src} dst=%{HOSTPORT:dst} mac=%{MAC:mac} request: %{WORD:request_type} %{GREEDYDATA:url}"
+#           "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_log_type} src=%{IPV4:src} dst=%{IPV4:dst} protocol=%{WORD:protocol} sport=%{NUMBER:src_port} dport=%{NUMBER:dst_port} pattern: %{GREEDYDATA:pattern}",
+#           "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_log_type} src=%{IPV4:src} dst=%{IPV4:dst} protocol=%{WORD:protocol} sport=%{NUMBER:src_port} dport=%{NUMBER:dst_port} translated_src_ip=%{IPV4:translated_src_ip} translated_port=%{NUMBER:translated_port}",
+#           "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_log_type} src=%{HOSTPORT:src} dst=%{HOSTPORT:dst} mac=%{MAC:mac} request: %{WORD:request_type} %{GREEDYDATA:url}"
 #         ]
 #       )
 #     '''
@@ -58,21 +58,38 @@ sinks:
     encoding:
       codec: json
     path: /loki/api/v1/push
-    remove_label_fields: true
+    # remove_label_fields: true
     labels:
-      host: '{{host}}'
-      port: '{{port}}'
-      source_type: '{{source_type}}'
-      priority: '{{priority}}'
-      version: '{{version}}'
-      epoch_time: '{{epoch_time}}'
+      # host: '{{host}}'
+      # port: '{{port}}'
+      # source_type: '{{source_type}}'
       hostname: '{{hostname}}'
-      meraki_role: '{{meraki_role}}'
-      src: '{{src}}'
-      dst: '{{dst}}'
-      protocol: '{{protocol}}'
-      src_port: '{{src_port}}'
-      dst_port: '{{dst_port}}'
-      pattern: '{{pattern}}'
-      translated_src_ip: '{{translated_src_ip}}'
-      translated_port: '{{translated_port}}'
+      meraki_log_type: '{{meraki_log_type}}'
+
+# sinks:
+#   socket_udp5114_loki:
+#     type: loki
+#     inputs:
+#       - socket_udp5114_parse
+#     endpoint: 'http://loki:3100'
+#     encoding:
+#       codec: json
+#     path: /loki/api/v1/push
+#     remove_label_fields: true
+#     labels:
+#       host: '{{host}}'
+#       port: '{{port}}'
+#       source_type: '{{source_type}}'
+#       priority: '{{priority}}'
+#       version: '{{version}}'
+#       epoch_time: '{{epoch_time}}'
+#       hostname: '{{hostname}}'
+#       meraki_log_type: '{{meraki_log_type}}'
+#       src: '{{src}}'
+#       dst: '{{dst}}'
+#       protocol: '{{protocol}}'
+#       src_port: '{{src_port}}'
+#       dst_port: '{{dst_port}}'
+#       pattern: '{{pattern}}'
+#       translated_src_ip: '{{translated_src_ip}}'
+#       translated_port: '{{translated_port}}'
