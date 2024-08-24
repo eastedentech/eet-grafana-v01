@@ -31,7 +31,7 @@ transforms:
           # URL Grok Pattern
           "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_log_type} src=%{HOSTPORT:src} dst=%{HOSTPORT:dst} mac=%{MAC:mac}( agent=%{QUOTEDSTRING:agent})? request: %{WORD:request_type} %{GREEDYDATA:url}",
           # Event Grok Pattern
-          "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_log_type} %{WORD:event_type}( url='%{URI:url})?( server='%{HOSTPORT:server_ip})?(' client_mac='%{MAC:client_mac}')?"
+          "<%{NUMBER:priority}>%{NUMBER:version} %{NUMBER:epoch_time} %{WORD:hostname} %{WORD:meraki_log_type} %{WORD:event_type}( url='%{EMAILLOCALPART:url})?( server='%{HOSTPORT:server_ip})?(' client_mac='%{MAC:client_mac}')?"
         ]
       )
       if err == null {
@@ -65,9 +65,8 @@ sinks:
     path: /loki/api/v1/push
     # remove_label_fields: true
     labels:
-      # host: '{{host}}'
-      # port: '{{port}}'
-      # source_type: '{{source_type}}'
+      host: '{{host}}'
+      port: '{{port}}'
       hostname: '{{hostname}}'
       meraki_log_type: '{{meraki_log_type}}'
 
