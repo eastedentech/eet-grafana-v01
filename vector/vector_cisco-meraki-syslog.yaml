@@ -54,21 +54,30 @@ transforms:
 #       )
 #     '''
 
-sinks:
-  socket_udp5114_loki:
-    type: loki
+# sinks:
+#   socket_udp5114_loki:
+#     type: loki
+#     inputs:
+#       - socket_udp5114_parse
+#     endpoint: 'http://loki:3100'
+#     encoding:
+#       codec: json
+#     path: /loki/api/v1/push
+#     # remove_label_fields: true
+#     labels:
+#       src: '{{src}}'
+#       dst: '{{dst}}'
+#       hostname: '{{hostname}}'
+#       meraki_log_type: '{{meraki_log_type}}'
+
+  Graylog_http-gelf:
+    type: http
     inputs:
       - socket_udp5114_parse
-    endpoint: 'http://loki:3100'
     encoding:
-      codec: json
-    path: /loki/api/v1/push
-    # remove_label_fields: true
-    labels:
-      src: '{{src}}'
-      dst: '{{dst}}'
-      hostname: '{{hostname}}'
-      meraki_log_type: '{{meraki_log_type}}'
+      codec: gelf
+    uri: http://kag-lnx-containerhost01.kauffmangas.lcl:12201
+
 
 # sinks:
 #   socket_udp5114_loki:
