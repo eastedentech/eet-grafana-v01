@@ -65,8 +65,8 @@ sinks:
     path: /loki/api/v1/push
     # remove_label_fields: true
     labels:
-      host: '{{host}}'
-      port: '{{port}}'
+      src: '{{src}}'
+      dst: '{{dst}}'
       hostname: '{{hostname}}'
       meraki_log_type: '{{meraki_log_type}}'
 
