@@ -76,7 +76,7 @@ sinks:
       - socket_udp5114_parse
     encoding:
       codec: gelf
-    uri: http://kag-lnx-containerhost01.kauffmangas.lcl:12201
+    uri: http://kag-lnx-containerhost01.kauffmangas.lcl:12201/gelf
 
 
 # sinks:
