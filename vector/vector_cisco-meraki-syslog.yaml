@@ -54,7 +54,7 @@ transforms:
 #       )
 #     '''
 
-# sinks:
+sinks:
 #   socket_udp5114_loki:
 #     type: loki
 #     inputs:
