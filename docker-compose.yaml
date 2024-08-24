@@ -7,39 +7,39 @@ volumes:
 services:
 
   # Grafana for exploring and visualizing data
-  grafana-server:
-    image: grafana/grafana:latest
-    restart: unless-stopped
-    volumes:
-      - "./grafana/grafana.ini:/etc/grafana/grafana.ini"
-      - "./grafana/provisioning:/etc/grafana/provisioning"
-      # - "./grafana/data:/var/lib/grafana"
-      - vol-grafana01:/var/lib/grafana
-    ports:
-      - "3000:3000"
+  # grafana-server:
+  #   image: grafana/grafana:latest
+  #   restart: unless-stopped
+  #   volumes:
+  #     - "./grafana/grafana.ini:/etc/grafana/grafana.ini"
+  #     - "./grafana/provisioning:/etc/grafana/provisioning"
+  #     # - "./grafana/data:/var/lib/grafana"
+  #     - vol-grafana01:/var/lib/grafana
+  #   ports:
+  #     - "3000:3000"
 
-  loki:
-    image: grafana/loki:latest
-    depends_on:
-      - grafana-server
-    healthcheck:
-      test: wget --quiet --tries=1 --output-document=- http://localhost:3100/ready | grep -q -w ready || exit 1
-      start_period: 5s
-      interval: 5s
-      timeout: 1s
-      retries: 12  # try for 2 minutes
-    restart: unless-stopped
-    ports:
-      - "3100:3100"
-    volumes:
-      - "./loki/config.yaml:/etc/loki/local-config.yaml"
-      - vol-loki01:/loki
+  # loki:
+  #   image: grafana/loki:latest
+  #   depends_on:
+  #     - grafana-server
+  #   healthcheck:
+  #     test: wget --quiet --tries=1 --output-document=- http://localhost:3100/ready | grep -q -w ready || exit 1
+  #     start_period: 5s
+  #     interval: 5s
+  #     timeout: 1s
+  #     retries: 12  # try for 2 minutes
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3100:3100"
+  #   volumes:
+  #     - "./loki/config.yaml:/etc/loki/local-config.yaml"
+  #     - vol-loki01:/loki
 
   vector:
     image: timberio/vector:latest-alpine
-    depends_on:
-      loki:
-        condition: service_healthy
+    # depends_on:
+    #   loki:
+    #     condition: service_healthy
     restart: unless-stopped
     command: --config /etc/vector/vector.yaml --config /etc/vector/vector_cisco-meraki-syslog.yaml
     ports:
